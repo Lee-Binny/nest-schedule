@@ -1,0 +1,37 @@
+import {
+    Column,
+    CreateDateColumn,
+    DeleteDateColumn,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
+import {Member} from "../../member/entities/member.entity";
+
+@Entity()
+export class User {
+    @PrimaryGeneratedColumn({ comment: '유저 아이디' })
+    id: number;
+
+    @Column({ type: 'varchar', length: 15, comment: '유저 아이디' })
+    userId: string;
+
+    @Column({ type: 'varchar', length: 100, comment: '유저 비밀번호' })
+    password: string;
+
+    @Column({ type: 'varchar', length: 15, comment: '유저 별명' })
+    nickname: string;
+
+    @CreateDateColumn({ comment: '생성 날짜' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ comment: '갱신 날짜' })
+    updatedAt: Date;
+
+    @DeleteDateColumn({ comment: '삭제 날짜' })
+    deletedAt: Date | null;
+
+    @OneToMany(() => Member, member => member.userId)
+    members: Member[];
+}
