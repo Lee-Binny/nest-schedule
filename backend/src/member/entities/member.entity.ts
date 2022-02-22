@@ -3,7 +3,7 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity, ManyToOne, OneToMany,
-    PrimaryGeneratedColumn,
+    PrimaryGeneratedColumn, Unique,
     UpdateDateColumn
 } from "typeorm";
 import {User} from "../../user/entities/user.entity";
@@ -11,6 +11,7 @@ import {Group} from "../../group/entities/group.entity";
 import {Schedule} from "../../schedule/entities/schedule.entity";
 
 @Entity()
+@Unique(['groupId', 'color'])
 export class Member {
     @PrimaryGeneratedColumn({ comment: '멤버 아이디' })
     id: number;
