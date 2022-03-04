@@ -1,5 +1,4 @@
 import {IsNotEmpty, IsString} from "class-validator";
-import {BeforeInsert} from "typeorm";
 
 export class CreateUserDto {
     @IsString()

@@ -1,4 +1,5 @@
 import {
+    BeforeInsert,
     Column,
     CreateDateColumn,
     DeleteDateColumn,
@@ -8,6 +9,8 @@ import {
     UpdateDateColumn
 } from "typeorm";
 import {Member} from "../../member/entities/member.entity";
+import * as bcrypt from "bcrypt";
+import {HttpException, HttpStatus} from "@nestjs/common";
 
 @Entity()
 export class User {
@@ -34,4 +37,17 @@ export class User {
 
     @OneToMany(() => Member, member => member.userId)
     members: Member[];
+
+    @BeforeInsert()
+    async hashPassword(): Promise<void> {
+        try {
+            this.password = await bcrypt.hash(this.password, 10);
+        } catch (e) {
+            console.log(e);
+            throw new HttpException({
+                result: false,
+                message: 'failed to hash password'
+            }, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
