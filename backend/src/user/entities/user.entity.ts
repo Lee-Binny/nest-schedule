@@ -11,6 +11,7 @@ import {
 import {Member} from "../../member/entities/member.entity";
 import * as bcrypt from "bcrypt";
 import {HttpException, HttpStatus} from "@nestjs/common";
+import { Schedule } from "../../schedule/entities/schedule.entity";
 
 @Entity()
 export class User {
@@ -35,8 +36,11 @@ export class User {
     @DeleteDateColumn({ comment: '삭제 날짜' })
     deletedAt: Date | null;
 
-    @OneToMany(() => Member, member => member.userId)
+    @OneToMany(() => Member, member => member.user)
     members: Member[];
+
+    @OneToMany(() => Schedule, schedule => schedule.user)
+    schedules: Schedule[];
 
     @BeforeInsert()
     async hashPassword(): Promise<void> {

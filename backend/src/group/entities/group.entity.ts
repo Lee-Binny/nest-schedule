@@ -8,6 +8,7 @@ import {
     UpdateDateColumn
 } from "typeorm";
 import {Member} from "../../member/entities/member.entity";
+import { Schedule } from "../../schedule/entities/schedule.entity";
 
 @Entity()
 export class Group {
@@ -29,6 +30,9 @@ export class Group {
     @DeleteDateColumn({ comment: '삭제 날짜' })
     deletedAt: Date;
 
-    @OneToMany(() => Member, member => member.userId)
+    @OneToMany(() => Member, member => member.user)
     members: Member[];
+
+    @OneToMany(() => Schedule, schedule => schedule.group)
+    schedules: Schedule[];
 }

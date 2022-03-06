@@ -53,18 +53,10 @@ export class UserService {
 
   async signIn(signInUser: SignInUserDto): Promise<void> {
     const user = await this.userRepository.findOne({userId: signInUser.userId});
-    if (!user) {
-      throw new NotFoundException({
+    if (!user || !await bcrypt.compare(signInUser.password, user.password)) {
+      throw new BadRequestException({
         result: false,
-        message: `not found userId ${signInUser.userId}`
-      });
-    }
-
-    const isMatch = await bcrypt.compare(signInUser.password, user.password);
-    if (!isMatch) {
-      throw new NotFoundException({
-        result: false,
-        message: `failed to sign in`
+        message: `invalid user data, user id: ${signInUser.userId}`
       });
     }
   }

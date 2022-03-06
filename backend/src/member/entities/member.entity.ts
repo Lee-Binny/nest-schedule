@@ -11,18 +11,18 @@ import {Group} from "../../group/entities/group.entity";
 import {Schedule} from "../../schedule/entities/schedule.entity";
 
 @Entity()
-@Unique(['groupId', 'color'])
+@Unique(['group', 'color'])
 export class Member {
     @PrimaryGeneratedColumn({ comment: '멤버 아이디' })
     id: number;
 
     @Column({ comment: '그룹 아이디' })
     @ManyToOne(() => Group, group => group.members)
-    groupId: number;
+    group: number;
 
     @Column({ comment: '유저 아이디' })
     @ManyToOne(() => User, user => user.members)
-    userId: number;
+    user: number;
 
     @Column({ type: 'tinyint', comment: '멤버 등급' })
     grade: number;
@@ -38,7 +38,4 @@ export class Member {
 
     @DeleteDateColumn({ comment: '삭제 날짜' })
     deletedAt: Date;
-
-    @OneToMany(() => Schedule, schedule => schedule.members)
-    schedules: Schedule[];
 }

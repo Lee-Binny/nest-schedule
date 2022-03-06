@@ -28,7 +28,8 @@ import {Schedule} from "./schedule/entities/schedule.entity";
     UserModule,
     GroupModule,
     MemberModule,
-    ScheduleModule],
+    ScheduleModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

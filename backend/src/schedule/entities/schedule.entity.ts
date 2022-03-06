@@ -6,12 +6,19 @@ import {
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
-import {Member} from "../../member/entities/member.entity";
+import { User } from "../../user/entities/user.entity";
+import { Group } from "../../group/entities/group.entity";
 
 @Entity()
 export class Schedule {
     @PrimaryGeneratedColumn({ comment: '일정 아이디' })
     id: number;
+
+    @ManyToOne(() => User, user => user.schedules)
+    user: User;
+
+    @ManyToOne(() => Group, group => group.schedules)
+    group: Group;
 
     @Column({ type: 'varchar', length: 45, comment: '일정명' })
     title: string;
@@ -30,7 +37,4 @@ export class Schedule {
 
     @DeleteDateColumn({ comment: '삭제 날짜' })
     deletedAt: Date;
-
-    @ManyToOne(() => Member, member => member.schedules)
-    members: Member;
 }
