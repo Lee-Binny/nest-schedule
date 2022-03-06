@@ -16,10 +16,10 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string, @Res() res) {
+  async findOne(@Param('id') id: string, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
-      user: this.userService.findOne(+id)
+      user: await this.userService.findOne(+id)
     });
   }
 
