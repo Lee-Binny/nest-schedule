@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, Res, HttpStatus } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Delete, Put, Res, HttpStatus, UseGuards } from "@nestjs/common";
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,6 +7,7 @@ import { SignInUserDto } from "./dto/sign-in-user.dto";
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
   @Get()
   async findAll(@Res() res) {
     return res.status(HttpStatus.OK).send({
@@ -28,14 +29,6 @@ export class UserController {
     return res.status(HttpStatus.OK).send({
       result: true,
       user: await this.userService.create(createUserDto)
-    });
-  }
-
-  @Post('signin')
-  async signIn(@Body() signInUserDto: SignInUserDto, @Res() res) {
-    await this.userService.signIn(signInUserDto);
-    return res.status(HttpStatus.OK).send({
-      result: true,
     });
   }
 

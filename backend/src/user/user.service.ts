@@ -51,16 +51,6 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
-  async signIn(signInUser: SignInUserDto): Promise<void> {
-    const user = await this.userRepository.findOne({userId: signInUser.userId});
-    if (!user || !await bcrypt.compare(signInUser.password, user.password)) {
-      throw new BadRequestException({
-        result: false,
-        message: `invalid user data, user id: ${signInUser.userId}`
-      });
-    }
-  }
-
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const existed = await this.userRepository.findOne({nickname: updateUserDto.nickname});
     if (existed) {

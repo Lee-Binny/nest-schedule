@@ -11,10 +11,13 @@ import {User} from "./user/entities/user.entity";
 import {Group} from "./group/entities/group.entity";
 import {Member} from "./member/entities/member.entity";
 import {Schedule} from "./schedule/entities/schedule.entity";
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -29,6 +32,7 @@ import {Schedule} from "./schedule/entities/schedule.entity";
     GroupModule,
     MemberModule,
     ScheduleModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
