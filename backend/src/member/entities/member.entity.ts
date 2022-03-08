@@ -35,7 +35,4 @@ export class Member {
 
     @UpdateDateColumn({ comment: '갱신 날짜' })
     updatedAt: Date;
-
-    @DeleteDateColumn({ comment: '삭제 날짜' })
-    deletedAt: Date;
 }

@@ -6,7 +6,7 @@ export class AuthController {
   constructor() {}
 
   @UseGuards(AuthGuard('local'))
-  @Post('login')
+  @Post()
   async signIn(@Req() req, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
