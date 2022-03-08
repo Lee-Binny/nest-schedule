@@ -12,6 +12,7 @@ export class GroupController {
     const result = await this.groupService.create(createGroupDto);
     return res.status(HttpStatus.OK).send({
       result: true,
+      timestamp: new Date().toISOString(),
       group: result.group,
       member: result.member,
     });
@@ -21,6 +22,7 @@ export class GroupController {
   findAll(@Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
+      timestamp: new Date().toISOString(),
       groups: this.groupService.findAllMyGroup(),
     });
   }
@@ -29,6 +31,7 @@ export class GroupController {
   getSchedules(@Param('id') id: string, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
+      timestamp: new Date().toISOString(),
       schedules: this.groupService.getSchedules(+id)
     });
   }
@@ -37,6 +40,7 @@ export class GroupController {
   getMembers(@Param('id') id: string, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
+      timestamp: new Date().toISOString(),
       members: this.groupService.getMembers(+id)
     });
   }
@@ -45,6 +49,7 @@ export class GroupController {
   async update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
+      timestamp: new Date().toISOString(),
       user: await this.groupService.update(+id, updateGroupDto),
     });
   }
@@ -54,6 +59,7 @@ export class GroupController {
     await this.groupService.remove(+id);
     return res.status(HttpStatus.OK).send({
       result: true,
+      timestamp: new Date().toISOString(),
     });
   }
 }

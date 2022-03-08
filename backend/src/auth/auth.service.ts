@@ -1,4 +1,4 @@
-import { ForbiddenException, HttpStatus, Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { SignInUserDto } from "../user/dto/sign-in-user.dto";
 import * as bcrypt from "bcrypt";
 import { Repository } from "typeorm";
@@ -18,8 +18,7 @@ export class AuthService {
     const user = await this.userRepository.findOne({ userId: signInUser.userId});
     if (!user || !await bcrypt.compare(signInUser.password, user.password)) {
       throw new ForbiddenException({
-        result: false,
-        message: `invalid user login data, user id: ${signInUser.userId}`
+        message: '로그인에 실패하였습니다.'
       });
     }
 

@@ -22,8 +22,7 @@ export class UserService {
     const result = await this.userRepository.findOne(id);
     if (!result) {
       throw new NotFoundException({
-        result: false,
-        message: 'not found user'
+        message: '존재하지 않는 유저입니다.'
       });
     }
 
@@ -34,16 +33,14 @@ export class UserService {
     const isExistedId = await this.userRepository.findOne({userId: createUserDto.userId});
     if (isExistedId) {
       throw new BadRequestException({
-        result: false,
-        message: `already existed userId ${createUserDto.userId}`
+        message: `이미 존재하는 아이디입니다.`
       });
     }
 
     const isExistedName = await this.userRepository.findOne({nickname: createUserDto.nickname});
     if (isExistedName) {
       throw new BadRequestException({
-        result: false,
-        message: `already existed nickname ${createUserDto.nickname}`
+        message: `이미 존재하는 닉네임입니다.`
       });
     }
 
@@ -55,16 +52,14 @@ export class UserService {
     const existed = await this.userRepository.findOne({nickname: updateUserDto.nickname});
     if (existed) {
       throw new NotFoundException({
-        result: false,
-        message: 'already existed nickname'
+        message: '이미 존재하는 닉네임입니다.'
       });
     }
 
     const user = await this.userRepository.findOne(id);
     if (!user) {
       throw new NotFoundException({
-        result: false,
-        message: 'not found user'
+        message: '존재하지 않는 유저입니다.'
       });
     }
 
@@ -76,8 +71,7 @@ export class UserService {
     const user = await this.userRepository.findOne(id);
     if (!user) {
       throw new NotFoundException({
-        result: false,
-        message: 'not found user'
+        message: '존재하지 않는 유저입니다.'
       });
     }
 

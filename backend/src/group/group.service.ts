@@ -30,8 +30,7 @@ export class GroupService {
     const isExisted = this.groupRepository.findOne({ name: createGroupDto.name});
     if (isExisted) {
       throw new BadRequestException({
-        result: false,
-        message: `already existed name ${createGroupDto.name}`
+        message: `이미 존재하는 이름입니다.`
       });
     }
 
@@ -58,13 +57,12 @@ export class GroupService {
     const group = await this.groupRepository.findOne(id);
     if (!group) {
       throw new NotFoundException({
-        result: false,
-        message: `not found group id ${group.id}`
+        message: `존재하지 않는 그룹입니다.}`
       });
     }
 
     return await this.scheduleRepository.find({
-      where: {group: id},
+      where: { group: id },
       relations: ['group'],
     });
   }
@@ -73,13 +71,12 @@ export class GroupService {
     const group = await this.groupRepository.findOne(id);
     if (!group) {
       throw new NotFoundException({
-        result: false,
-        message: `not found group id ${group.id}`
+        message: `존재하지 않는 그룹입니다.`
       });
     }
 
     return await this.memberRepository.find({
-      where: {group: id},
+      where: { group: id },
       relations: ['group'],
     });
   }
@@ -88,8 +85,7 @@ export class GroupService {
     const group = await this.groupRepository.findOne(id);
     if (!group) {
       throw new NotFoundException({
-        result: false,
-        message: `not found group id ${group.id}`
+        message: `존재하지 않는 그룹입니다.`
       });
     }
 
@@ -102,8 +98,7 @@ export class GroupService {
     const group = await this.groupRepository.findOne(id);
     if (!group) {
       throw new NotFoundException({
-        result: false,
-        message: `not found group id ${group.id}`
+        message: `존재하지 않는 그룹입니다.`
       });
     }
 
