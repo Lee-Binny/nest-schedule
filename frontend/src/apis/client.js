@@ -11,13 +11,11 @@ export const client = axios.create({
 client.interceptors.response.use(
   (res) => {
     if (!res.data.result) {
-      console.log('res error: ', res.data.message);
       message.error(res.data.message ?? DEFAULT_ERROR_MESSAGE);
       return null;
     }
-    return res;
+    return res.data;
   }, (error) => {
-    console.log('error: ', error);
     console.error(error);
     message.error(DEFAULT_ERROR_MESSAGE);
     return Promise.reject(error);
