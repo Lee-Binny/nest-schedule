@@ -1,9 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, {keyframes} from 'styled-components';
 import { Form, Input, Button } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import AuthApi from '../apis/auth';
 
 const SignIn = () => {
+  const [loginData, setLoginData] = useState({
+    id: '',
+    password: '',
+  });
+
+  const onInput = (e) => {
+    setLoginData(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
+  };
+
+  const onSubmit = async () => {
+    const res = await AuthApi.login(loginData);
+    console.log(res);
+  }
+
   return (
     <Container>
       <LoginBox>
@@ -19,21 +37,29 @@ const SignIn = () => {
           initialValues={{ remember: true }}
           autoComplete="off"
           style={{ width: '100%' }}
+          onFinish={onSubmit}
         >
           <Form.Item
             name="id"
             rules={[{ required: true, message: '아이디를 입력하세요!' }]}
           >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="아이디를 입력하세요" />
+            <Input
+              id="userId"
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="아이디를 입력하세요"
+              onChange={onInput}
+            />
           </Form.Item>
           <Form.Item
             name="password"
             rules={[{ required: true, message: '비밀번호룰 입력하세요!' }]}
           >
             <Input
+              id="password"
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="비밀번호를 입력하세요"
+              onChange={onInput}
             />
           </Form.Item>
 
@@ -55,6 +81,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: #80a3ab;
 `;
 
 const LoginBox = styled.div`
@@ -66,6 +93,8 @@ const LoginBox = styled.div`
   justify-content: center;
   align-items: center;
   border: 1px solid #dedede;
+  background: #ffffff;
+  border-radius: 0.3rem;
 `;
 
 const Title = styled.p`
