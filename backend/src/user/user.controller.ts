@@ -16,12 +16,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../../dist/auth/jwt-auth.guard';
 
-@UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async findAll(@Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
@@ -31,6 +31,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async findOne(@Param('id') id: string, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
@@ -49,6 +50,7 @@ export class UserController {
   }
 
   @Put()
+  @UseGuards(JwtAuthGuard)
   async update(@Req() req, @Body() updateUserDto: UpdateUserDto, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
@@ -58,6 +60,7 @@ export class UserController {
   }
 
   @Delete()
+  @UseGuards(JwtAuthGuard)
   async remove(@Req() req, @Res() res) {
     await this.userService.remove(req.user.id);
     return res.status(HttpStatus.OK).send({

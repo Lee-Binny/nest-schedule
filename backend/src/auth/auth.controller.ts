@@ -1,5 +1,14 @@
-import { Controller, Get, HttpStatus, Post, Req, Res, UseFilters, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UseFilters,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -8,11 +17,17 @@ export class AuthController {
   @Post()
   @UseGuards(AuthGuard('local'))
   async signIn(@Req() req, @Res() res) {
-    return res.status(HttpStatus.OK).send({
-      result: true,
-      timestamp: new Date().toISOString(),
-      auth: req.user,
-    });
+    return res
+      .cookie('jwt', req.user.token, {
+        maxAge: 1000 * 60 * 60,
+        httpOnly: true,
+      })
+      .status(HttpStatus.OK)
+      .send({
+        result: true,
+        timestamp: new Date().toISOString(),
+        auth: req.user,
+      });
   }
 
   @Get()
@@ -21,7 +36,7 @@ export class AuthController {
     return res.status(HttpStatus.OK).send({
       result: true,
       user: req.user,
-    })
+    });
   }
 
   @Get()
