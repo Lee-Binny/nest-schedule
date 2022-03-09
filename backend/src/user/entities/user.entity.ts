@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import {Member} from "../../member/entities/member.entity";
 import * as bcrypt from "bcrypt";
-import {HttpException, HttpStatus} from "@nestjs/common";
+import { HttpException, HttpStatus, InternalServerErrorException } from "@nestjs/common";
 import { Schedule } from "../../schedule/entities/schedule.entity";
 
 @Entity()
@@ -48,10 +48,9 @@ export class User {
             this.password = await bcrypt.hash(this.password, 10);
         } catch (e) {
             console.log(e);
-            throw new HttpException({
-                result: false,
-                message: 'failed to hash password'
-            }, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new InternalServerErrorException({
+                message: '비밀번호 암호화에 실패하였습니다.'
+            });
         }
     }
 }

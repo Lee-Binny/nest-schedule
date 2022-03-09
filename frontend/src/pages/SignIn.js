@@ -19,7 +19,7 @@ const SignIn = () => {
 
   const onSubmit = async () => {
     const res = await AuthApi.login(loginData);
-    console.log(res);
+    document.location.href = '/';
   }
 
   return (

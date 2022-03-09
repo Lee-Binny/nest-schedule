@@ -1,15 +1,29 @@
-import { Controller, Get, Post, Body, Param, Delete, Res, HttpStatus, Put } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Res,
+  HttpStatus,
+  Put,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { JwtAuthGuard } from '../../dist/auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('group')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
   @Post()
-  async create(@Body() createGroupDto: CreateGroupDto, @Res() res) {
-    const result = await this.groupService.create(createGroupDto);
+  async create(@Req() req, @Body() createGroupDto: CreateGroupDto, @Res() res) {
+    const result = await this.groupService.create(req.user.id, createGroupDto);
     return res.status(HttpStatus.OK).send({
       result: true,
       timestamp: new Date().toISOString(),
@@ -19,44 +33,48 @@ export class GroupController {
   }
 
   @Get()
-  findAll(@Res() res) {
+  getMyGroups(@Req() req, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
       timestamp: new Date().toISOString(),
-      groups: this.groupService.findAllMyGroup(),
+      groups: this.groupService.getMyGroups(req.user.id),
     });
   }
 
-  @Get(':id')
-  getSchedules(@Param('id') id: string, @Res() res) {
+  @Get('schedule/:groupId')
+  async getSchedules(@Param('groupId') groupId: string, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
       timestamp: new Date().toISOString(),
-      schedules: this.groupService.getSchedules(+id)
+      schedules: await this.groupService.getSchedules(+groupId),
     });
   }
 
-  @Get('members/:id')
-  getMembers(@Param('id') id: string, @Res() res) {
+  @Get('members/:groupId')
+  getMembers(@Param('groupId') groupId: string, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
       timestamp: new Date().toISOString(),
-      members: this.groupService.getMembers(+id)
+      members: this.groupService.getMembers(+groupId),
     });
   }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() updateGroupDto: UpdateGroupDto, @Res() res) {
+  @Put(':groupId')
+  async update(
+    @Param('groupId') groupId: string,
+    @Body() updateGroupDto: UpdateGroupDto,
+    @Res() res,
+  ) {
     return res.status(HttpStatus.OK).send({
       result: true,
       timestamp: new Date().toISOString(),
-      user: await this.groupService.update(+id, updateGroupDto),
+      user: await this.groupService.update(+groupId, updateGroupDto),
     });
   }
 
-  @Delete(':id')
-  async remove(@Param('id') id: string, @Res() res) {
-    await this.groupService.remove(+id);
+  @Delete(':groupId')
+  async remove(@Req() req, @Param('groupId') groupId: string, @Res() res) {
+    await this.groupService.remove(req.user.id, +groupId);
     return res.status(HttpStatus.OK).send({
       result: true,
       timestamp: new Date().toISOString(),
