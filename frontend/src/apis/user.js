@@ -8,12 +8,12 @@ export default {
     return await client.get(`/user/${params.id}`);
   },
   createUser: async (body) => {
-    return await client.post('/user', body);
+    return await client.post("/user", body);
   },
-  updateUserNickname: async (param, body) => {
-    return await client.put(`/user/${param.id}` , body);
+  updateUserNickname: async (body) => {
+    return await client.put(`/user/`, body);
   },
-  deleteUser: async (param) => {
-    return await client.delete(`/user/${param.id}`);
+  deleteUser: async () => {
+    return await client.delete(`/user`);
   }
 }
