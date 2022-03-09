@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout, Menu, Dropdown, Button } from 'antd';
 import {
   CalendarOutlined,
@@ -21,7 +21,14 @@ const Home = () => {
 
   const onClickMenu = (event) => {
     setSelectedMenu(event.key);
-  }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      document.location.href = '/signin';
+    }
+  }, [])
 
   const menu = (
     <Menu>

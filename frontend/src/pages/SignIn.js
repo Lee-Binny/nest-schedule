@@ -10,7 +10,7 @@ const SignIn = () => {
     password: '',
   });
 
-  const onInput = (e) => {
+  const onChange = (e) => {
     setLoginData(prev => ({
       ...prev,
       [e.target.id]: e.target.value,
@@ -19,7 +19,18 @@ const SignIn = () => {
 
   const onSubmit = async () => {
     const res = await AuthApi.login(loginData);
-    document.location.href = '/';
+    if (res && res.result) {
+      console.log(res);
+      localStorage.setItem('id', res.auth.id);
+      localStorage.setItem('userId', res.auth.userId);
+      localStorage.setItem('nickname', res.auth.nickname);
+      localStorage.setItem('token', res.auth.token);
+      document.location.href = '/'
+    }
+  };
+
+  const onClick = async () => {
+    document.location.href="/signup"
   }
 
   return (
@@ -47,19 +58,19 @@ const SignIn = () => {
               id="userId"
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="아이디를 입력하세요"
-              onChange={onInput}
+              onChange={onChange}
             />
           </Form.Item>
           <Form.Item
             name="password"
-            rules={[{ required: true, message: '비밀번호룰 입력하세요!' }]}
+            rules={[{ required: true, message: '비밀번호를 입력하세요!' }]}
           >
             <Input
               id="password"
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="비밀번호를 입력하세요"
-              onChange={onInput}
+              onChange={onChange}
             />
           </Form.Item>
 
@@ -67,7 +78,14 @@ const SignIn = () => {
             <Button htmlType="submit" className="login-form-button" style={{ width: '100%' }}>
               로그인
             </Button>
-          </Form.Item>
+            <Button
+              onClick={onClick}
+              className="login-form-button"
+              style={{ width: '100%', marginTop: '10px', background: '#80a3ab', color: '#ffffff' }}
+            >
+              회원가입
+            </Button>
+         </Form.Item>
         </Form>
       </LoginBox>
     </Container>
