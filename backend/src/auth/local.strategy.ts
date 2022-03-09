@@ -2,7 +2,7 @@ import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignInUserDto } from "./dto/sign-in-user.dto";
+import { SignInUserDto } from './dto/sign-in-user.dto';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -22,10 +22,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException({
         result: false,
-        message: 'unauthorized',
+        message: '접근 권한이 없습니다.',
       });
     }
-
     return user;
   }
 }
