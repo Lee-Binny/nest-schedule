@@ -6,18 +6,18 @@ import {
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Member } from './entities/member.entity';
 import { MEMBER_GRADE } from '../common/constants';
+import { Schedule } from '../schedule/entities/schedule.entity';
 
 @Injectable()
 export class MemberService {
   constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
     @InjectRepository(Member)
     private memberRepository: Repository<Member>,
+    @InjectRepository(Schedule)
+    private scheduleRepository: Repository<Schedule>,
   ) {}
 
   async create(id: number, createMemberDto: CreateMemberDto): Promise<Member> {
@@ -88,7 +88,21 @@ export class MemberService {
     }
 
     member.color = updateMemberDto.color;
-    return this.memberRepository.save(member);
+    const newMember = await this.memberRepository.save(member);
+
+    await this.scheduleRepository
+      .createQueryBuilder()
+      .update(Schedule)
+      .set({
+        color: updateMemberDto.color,
+      })
+      .where('groupId = :groupId and userId = :userId ', {
+        groupId: updateMemberDto.groupId,
+        userId: id,
+      })
+      .execute();
+
+    return newMember;
   }
 
   async remove(id: number, groupId: number): Promise<void> {
