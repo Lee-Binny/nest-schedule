@@ -5,8 +5,22 @@ import { DEFAULT_ERROR_MESSAGE } from "../common/constants";
 
 export const client = axios.create({
   baseURL: BACKEND_BASE_URL,
-  timeout: 15000
+  timeout: 15000,
+  withCredentials: true,
 });
+
+client.interceptors.request.use(
+  async (req) => {
+    req.headers = {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Accept': 'application/json',
+    };
+    return req;
+  },
+  error => {
+    return Promise.reject(error)
+  }
+);
 
 client.interceptors.response.use(
   (res) => {

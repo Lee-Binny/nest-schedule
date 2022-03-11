@@ -20,17 +20,13 @@ const SignIn = () => {
   const onSubmit = async () => {
     const res = await AuthApi.login(loginData);
     if (res && res.result) {
-      console.log(res);
-      localStorage.setItem('id', res.auth.id);
-      localStorage.setItem('userId', res.auth.userId);
-      localStorage.setItem('nickname', res.auth.nickname);
       localStorage.setItem('token', res.auth.token);
-      document.location.href = '/'
+      document.location.href = '/';
     }
   };
 
   const onClick = async () => {
-    document.location.href="/signup"
+    document.location.href="/signup";
   }
 
   return (

@@ -9,6 +9,8 @@ import {
 import Calendar from "../components/Calendar/Calendar";
 import Members from "../components/Members/Members";
 import ChatRoom from "../components/ChatRoom/ChatRoom";
+import AuthAPI from '../apis/auth';
+import client from '../apis/client';
 
 const { Header, Content, Sider } = Layout;
 
@@ -23,10 +25,13 @@ const Home = () => {
     setSelectedMenu(event.key);
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      document.location.href = '/signin';
+  useEffect(async () => {
+    console.log(client.defaults);
+    const res = await AuthAPI.getProfile();
+    if (res && res.result) {
+      console.log(res);
+    } else {
+      // document.location.href = '/signin';
     }
   }, [])
 
