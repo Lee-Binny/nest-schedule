@@ -55,6 +55,12 @@ export class GroupService {
       .getMany();
   }
 
+  searchGroup(name: string): Promise<Group[]> {
+    return this.groupRepository.createQueryBuilder('group')
+      .where('name like :name', { name:`%${name}%` })
+      .getMany();
+  }
+
   async getSchedules(groupId: number): Promise<Schedule[]> {
     const group = await this.groupRepository.findOne(groupId);
     if (!group) {

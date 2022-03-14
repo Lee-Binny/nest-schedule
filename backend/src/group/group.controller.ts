@@ -33,11 +33,20 @@ export class GroupController {
   }
 
   @Get()
-  getMyGroups(@Req() req, @Res() res) {
+  async getMyGroups(@Req() req, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
       timestamp: new Date().toISOString(),
-      groups: this.groupService.getMyGroups(req.user.id),
+      groups: await this.groupService.getMyGroups(req.user.id),
+    });
+  }
+
+  @Get(':name')
+  async searchGroup(@Param('name') name: string, @Res() res) {
+    return res.status(HttpStatus.OK).send({
+      result: true,
+      timestamp: new Date().toISOString(),
+      groups: await this.groupService.searchGroup(name),
     });
   }
 

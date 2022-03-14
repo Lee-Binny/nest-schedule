@@ -9,14 +9,16 @@ import {
 import Calendar from "../components/Calendar/Calendar";
 import Members from "../components/Members/Members";
 import ChatRoom from "../components/ChatRoom/ChatRoom";
-import AuthAPI from '../apis/auth';
-import client from '../apis/client';
+import GroupAPI from '../apis/group';
+import JoinGroup from '../components/Group/JoinGroup';
 
 const { Header, Content, Sider } = Layout;
 
 const Home = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState('Calendar');
+  const [groups, setGroups] = useState([]);
+  const [selected, setSelected] = useState(null);
   const onCollapse = () => {
     setCollapsed(!collapsed);
   };
@@ -26,26 +28,28 @@ const Home = () => {
   };
 
   useEffect(async () => {
-    console.log(client.defaults);
-    const res = await AuthAPI.getProfile();
-    if (res && res.result) {
-      console.log(res);
+    if (!localStorage.getItem('token')) {
+      document.location.href = '/signin';
     } else {
-      // document.location.href = '/signin';
+      const res = await GroupAPI.getMyGroups();
+      setGroups(res.groups);
+      if (res.groups.length > 0) {
+        setSelected(res.groups[0]);
+      }
     }
-  }, [])
+  }, []);
 
   const menu = (
     <Menu>
-      <Menu.Item key="Group1" >
-        Group 1
-      </Menu.Item>
-      <Menu.Item key="2">
-        Group 2
-      </Menu.Item>
-      <Menu.Item key="3">
-        Group 3
-      </Menu.Item>
+      { groups.length > 0 && (
+        groups.map(group => {
+          return (
+            <Menu.Item key={group.id} >
+              {group.name}
+            </Menu.Item>
+          )
+        })
+      )}
     </Menu>
   );
 
@@ -63,7 +67,9 @@ const Home = () => {
             fontSize: '18px',
             fontWeight: 800,
           }}>
-            Group 1 <DownOutlined />
+            { selected && (
+              selected.name
+            )} <DownOutlined />
           </Button>
         </Dropdown>
       </Header>
@@ -84,13 +90,13 @@ const Home = () => {
         <Layout className="site-layout" style={{ backgroundColor: '#ffffff' }}>
           <Content style={{ margin: '0 16px', backgroundColor: '#ffffff' }}>
             <div className="site-layout-background" style={{ padding: 24, height: '100%' }}>
-              { selectedMenu === 'Calendar' ? <Calendar/> : selectedMenu === 'Members' ? <Members/> : <ChatRoom/> }
+              { !selected ? <JoinGroup /> : selectedMenu === 'Calendar' ? <Calendar/> : selectedMenu === 'Members' ? <Members/> : <ChatRoom/> }
             </div>
           </Content>
         </Layout>
       </Layout>
     </Layout>
   )
-}
+};
 
 export default Home;

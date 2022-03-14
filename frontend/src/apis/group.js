@@ -7,6 +7,9 @@ export default {
   getMyGroups: async () => {
     return await client.get('/group');
   },
+  searchGroup: async (params) => {
+    return await client.get(`/group/${params.name}`);
+  },
   getSchedules: async (params) => {
     return await client.get(`/group/schedule/${params.groupId}`);
   },
