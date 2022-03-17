@@ -4,9 +4,10 @@ import { MemberController } from './member.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Member } from './entities/member.entity';
 import { Schedule } from '../schedule/entities/schedule.entity';
+import { User } from '../user/entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Member, Schedule])],
+  imports: [TypeOrmModule.forFeature([User, Member, Schedule])],
   controllers: [MemberController],
   providers: [MemberService],
 })

@@ -1,9 +1,13 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateMemberDto {
   @IsNotEmpty()
-  @IsNumber()
-  readonly groupId: number;
+  @IsString()
+  readonly userId: string;
+
+  @IsNotEmpty()
+  @IsString()
+  readonly groupId: string;
 
   @IsNotEmpty()
   @IsString()

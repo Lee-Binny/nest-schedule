@@ -1,15 +1,9 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { OmitType } from '@nestjs/mapped-types';
+import { CreateMemberDto } from './create-member.dto';
 
-export class UpdateGradeDto {
+export class UpdateGradeDto extends OmitType(CreateMemberDto, ['color' as const]){
   @IsNotEmpty()
-  @IsNumber()
-  readonly userId: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  readonly groupId: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  readonly grade: number;
+  @IsString()
+  readonly grade: string;
 }

@@ -34,15 +34,6 @@ export class MemberController {
     });
   }
 
-  @Get(':groupId')
-  findOne(@Req() req, @Param('groupId') groupId: string, @Res() res) {
-    return res.status(HttpStatus.OK).send({
-      result: true,
-      timestamp: new Date().toISOString(),
-      member: this.memberService.findOne(req.user.id, +groupId),
-    });
-  }
-
   @Put()
   async update(
     @Req() req,
@@ -59,7 +50,7 @@ export class MemberController {
   @Put('grade')
   async updateMemberGrade(
     @Req() req,
-    updateGradeDto: UpdateGradeDto,
+    @Body() updateGradeDto: UpdateGradeDto,
     @Res() res,
   ) {
     return res.status(HttpStatus.OK).send({

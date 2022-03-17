@@ -3,14 +3,14 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
-import {TypeOrmModule} from "@nestjs/typeorm";
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { GroupModule } from './group/group.module';
 import { MemberModule } from './member/member.module';
 import { ScheduleModule } from './schedule/schedule.module';
-import {User} from "./user/entities/user.entity";
-import {Group} from "./group/entities/group.entity";
-import {Member} from "./member/entities/member.entity";
-import {Schedule} from "./schedule/entities/schedule.entity";
+import { User } from './user/entities/user.entity';
+import { Group } from './group/entities/group.entity';
+import { Member } from './member/entities/member.entity';
+import { Schedule } from './schedule/entities/schedule.entity';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -26,7 +26,8 @@ import { AuthModule } from './auth/auth.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [User, Group, Member, Schedule],
-      synchronize: true,
+      synchronize: false,
+      logging: ['query', 'error'],
     }),
     UserModule,
     GroupModule,
@@ -37,5 +38,4 @@ import { AuthModule } from './auth/auth.module';
   controllers: [AppController],
   providers: [AppService],
 })
-
 export class AppModule {}
