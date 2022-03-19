@@ -2,18 +2,18 @@ import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateScheduleDto {
   @IsNotEmpty()
-  @IsNumber()
-  readonly groupId: number;
+  @IsString()
+  readonly groupId: string;
 
   @IsNotEmpty()
   @IsString()
   readonly title: string;
 
   @IsNotEmpty()
-  @IsDate()
-  readonly startAt: Date;
+  @IsString()
+  readonly startAt: string;
 
   @IsNotEmpty()
-  @IsDate()
-  readonly endAt: Date;
+  @IsString()
+  readonly endAt: string;
 }

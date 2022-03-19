@@ -28,7 +28,7 @@ export class ScheduleController {
   }
 
   @Put(':scheduleId')
-  update(
+  async update(
     @Req() req,
     @Param('scheduleId') scheduleId: string,
     @Body() updateScheduleDto: UpdateScheduleDto,
@@ -37,7 +37,7 @@ export class ScheduleController {
     return res.status(HttpStatus.OK).send({
       result: true,
       timestamp: new Date().toISOString(),
-      schedule: this.scheduleService.update(req.user.id, +scheduleId, updateScheduleDto),
+      schedule: await this.scheduleService.update(req.user.id, +scheduleId, updateScheduleDto),
     });
   }
 

@@ -26,7 +26,7 @@ export class ScheduleService {
   ): Promise<Schedule> {
     const member = await this.memberRepository.findOne({
       user: id,
-      group: createScheduleDto.groupId,
+      group: +createScheduleDto.groupId,
     });
     if (!member) {
       throw new BadRequestException({
@@ -36,7 +36,7 @@ export class ScheduleService {
 
     const schedule = await this.scheduleRepository.create({
       user: id,
-      group: createScheduleDto.groupId,
+      group: +createScheduleDto.groupId,
       title: createScheduleDto.title,
       color: member.color,
       startAt: createScheduleDto.startAt,
@@ -51,17 +51,23 @@ export class ScheduleService {
     scheduleId: number,
     updateScheduleDto: UpdateScheduleDto,
   ): Promise<Schedule> {
-    const schedule = await this.scheduleRepository.findOne(id);
+    const schedule = await this.scheduleRepository.findOne(scheduleId);
     if (!schedule) {
       throw new NotFoundException({
         message: '존재하지 않는 스케줄입니다.',
       });
     }
 
+    if (schedule.user !== id) {
+      throw new BadRequestException({
+        message: '스케줄을 수정할 수 없습니다.',
+      });
+    }
+
     schedule.title = updateScheduleDto.title;
-    schedule.startAt = updateScheduleDto.startAt;
-    schedule.endAt = updateScheduleDto.endAt;
-    return this.scheduleRepository.save(schedule);
+    schedule.startAt = new Date(updateScheduleDto.startAt);
+    schedule.endAt = new Date(updateScheduleDto.endAt);
+    return await this.scheduleRepository.save(schedule);
   }
 
   async remove(id: number, scheduleId: number): Promise<void> {
