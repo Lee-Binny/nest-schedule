@@ -14,14 +14,14 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from '../../dist/auth/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   async findAll(@Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
@@ -31,7 +31,7 @@ export class UserController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   async findOne(@Param('id') id: string, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
@@ -50,7 +50,7 @@ export class UserController {
   }
 
   @Put()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   async update(@Req() req, @Body() updateUserDto: UpdateUserDto, @Res() res) {
     return res.status(HttpStatus.OK).send({
       result: true,
@@ -60,7 +60,7 @@ export class UserController {
   }
 
   @Delete()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   async remove(@Req() req, @Res() res) {
     await this.userService.remove(req.user.id);
     return res.status(HttpStatus.OK).send({

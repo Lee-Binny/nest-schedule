@@ -13,9 +13,9 @@ import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { UpdateGradeDto } from './dto/update-grade.dto';
-import { JwtAuthGuard } from '../../dist/auth/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(AuthGuard('jwt'))
 @Controller('member')
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}

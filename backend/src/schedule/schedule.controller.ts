@@ -11,9 +11,9 @@ import {
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
-import { JwtAuthGuard } from '../../dist/auth/jwt-auth.guard';
+import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(AuthGuard('jwt'))
 @Controller('schedule')
 export class ScheduleController {
   constructor(private readonly scheduleService: ScheduleService) {}
